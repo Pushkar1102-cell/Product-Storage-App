@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Product List</h1>
+<form method="get" class="mb-3">
+    <input type="text" name="search" placeholder="Search by name" value="{{ request.GET.search }}">
+    <select name="status">
+        <option value="">All Status</option>
+        <option value="Active" {% if request.GET.status == 'Active' %}selected{% endif %}>Active</option>
+        <option value="Inactive" {% if request.GET.status == 'Inactive' %}selected{% endif %}>Inactive</option>
+    </select>
+    <button type="submit">Search</button>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.id }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.description }}</td>
+            <td>{{ product.price }}</td>
+            <td>{{ product.status }}</td>
+            <td>
+                <a href="{% url 'product_form' product.id %}" class="btn btn-primary">Edit</a>
+                <a href="{% url 'delete_product' product.id %}" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{% url 'product_form' %}" class="btn btn-success">Add New Product</a>
+{% endblock %}
